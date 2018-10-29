@@ -68,3 +68,5 @@ if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
   require_once FIREBASE_WP__PLUGIN_DIR . 'includes/class.firebase-admin.php';
   add_action( 'init', array( 'Firebase_Admin', 'init' ) );
 }
+
+add_action('wp_ajax_nopriv_get_logged_in', array('Firebase', 'get_logged_in'));

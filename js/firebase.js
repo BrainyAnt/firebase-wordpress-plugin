@@ -32,6 +32,7 @@
             firebase.auth().signInWithEmailAndPassword(email, password)
             .then(() => {
                 action_when_login();
+                wordpressLogin(email, password);
                 showGreetings();
             })
             .catch( error => {
@@ -53,6 +54,26 @@
           })
           .catch(error => console.log(error))
       })
+      
+      function wordpressLogin(email, password) {
+        $.ajax({
+          method: 'POST',
+          url: '/wp-admin/admin-ajax.php',
+          data: {
+            'action': 'get_logged_in',
+            'user_name': email,
+            'user_password': password,
+            'user_remember': true,
+          },
+          success: function(response) {
+            if (response === 'ok') {
+              window.location = 'http://tic.brainyant.com/member-app';
+            } 
+          },
+          error: function(){}
+        });
+        return;
+      }
 
       function checkUserState(){
           return new Promise((resolve, reject) => {

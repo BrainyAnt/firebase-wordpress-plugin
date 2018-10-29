@@ -32,5 +32,34 @@
            )
        );
     }
+    
+    public static function get_logged_in() {
+      global $wpdb;
+      // Check if users is already logged in
+      if ( is_user_logged_in() ) {
+          echo 'You are already logged in';
+          die;
+      }
+
+      //We shall SQL escape all inputs
+      $username = $wpdb->escape($_REQUEST['user_name']);
+      $password = $wpdb->escape($_REQUEST['user_password']);
+      $remember = $wpdb->escape($_REQUEST['user_remember']);
+
+      $creds = array();
+      $creds['user_login'] = $username;
+      $creds['user_password'] = $password;
+      $creds['remember'] = $remember;
+      $user_signon = wp_signon( $creds, false );
+
+      // Check if error
+      if ( is_wp_error($user_signon)) {
+        echo $user_verify->get_error_code();
+        exit();
+      } else {
+        echo 'ok';
+        exit;
+      }
+    }
   }
 ?>
